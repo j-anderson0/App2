@@ -1,13 +1,20 @@
-import streamlit as st 
+import streamlit as st
+from send_email import send_email
 
 st.header('Contact Us')
-st.write('''
-    <div style='text-align: justify; font-size: 20px;'>
-    Hi! I'm J, humble student of the world. I'm a data scientist and a budding software engineer. 
-    I'm passionate about using data to solve problems and build products that make life easier. 
-    I'm a self-taught programmer, and I'm always looking for opportunities to learn and grow. 
-    I'm currently looking for a job as a data scientist or software engineer. 
-    If you're looking for a passionate, hard-working, and dedicated person to join your team, please reach out to me. 
-    I'd love to hear from you! <br><br> <br><br>
-    </div>
-    ''', unsafe_allow_html=True)
+
+with st.form(key='email_form'):
+    name = st.text_input(label='Name') 
+    email = st.text_input(label='Email')
+    message = st.text_area(label='Message')
+    message = f"""\
+Subject: {name} has sent you a message
+
+From: {email}
+{message}
+"""
+    submit_button = st.form_submit_button(label='Submit')
+    print(submit_button)
+    if submit_button:
+        send_email(message)
+        st.info("Your email was sent successfully!")
